@@ -1,13 +1,13 @@
 package com.builtbroken.woodenbucket.fluid;
 
 import com.builtbroken.woodenbucket.WoodenBucket;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by Dark on 8/8/2015.
@@ -18,7 +18,7 @@ public class BlockMilk extends BlockFluidClassic
 
     public BlockMilk(Fluid fluid)
     {
-        super(fluid, Material.water);
+        super(fluid, Material.WATER);
         setBlockName(WoodenBucket.PREFIX + "milk");
     }
 

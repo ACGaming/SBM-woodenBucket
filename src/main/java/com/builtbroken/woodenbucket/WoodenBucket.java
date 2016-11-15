@@ -1,4 +1,11 @@
-package com.builtbroken.woodenbucket;
+	package com.builtbroken.woodenbucket;
+
+import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPED;
+
+import java.io.File;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.builtbroken.woodenbucket.bucket.ItemWoodenBucket;
 import com.builtbroken.woodenbucket.bucket.PamFreshWaterBucketRecipe;
@@ -7,31 +14,27 @@ import com.builtbroken.woodenbucket.fluid.BlockMilk;
 import com.builtbroken.woodenbucket.mods.BucketHandler;
 import com.builtbroken.woodenbucket.mods.agricraft.AgricraftWaterPad;
 import com.builtbroken.woodenbucket.mods.agricraft.AgricraftWaterPadFilled;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-
-import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPED;
 
 /**
  * Created by Dark on 7/25/2015.
@@ -79,7 +82,7 @@ public class WoodenBucket
         ALLOW_LEAK_TO_CAUSE_FIRES = config.getBoolean("AllowFires", "Leaking", ALLOW_LEAK_TO_CAUSE_FIRES, "If molten fluid leaks, should there be a chance to cause fires?");
         LEAK_FIRE_CHANCE = config.getFloat("FireChance", "Leaking", LEAK_FIRE_CHANCE, 0f, 1f, "How often to cause fire from molten fluids leaking");
         itemBucket = new ItemWoodenBucket();
-        GameRegistry.registerItem(itemBucket, "wbBucket", DOMAIN);
+        GameRegistry.registerItem(itemBucket, "wbBucket");
         MinecraftForge.EVENT_BUS.register(itemBucket);
     }
 
@@ -98,7 +101,7 @@ public class WoodenBucket
     {
         if (GENERATE_MILK_FLUID && FluidRegistry.getFluid("milk") == null)
         {
-            fluid_milk = new Fluid("milk");
+            fluid_milk = new Fluid("milk", ResourceLocation still, ResourceLocation flowing);
             FluidRegistry.registerFluid(fluid_milk);
             Block blockMilk = new BlockMilk(fluid_milk);
             GameRegistry.registerBlock(blockMilk, "wbBlockMilk");
@@ -106,17 +109,17 @@ public class WoodenBucket
 
         //TODO add crafting recipes for milk bucket
         // TODO add proper ore shaped recipes so modded sticks and other items can be used in the recipes
-        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.OAK.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.planks, 1, 0), 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
-        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.SPRUCE.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.planks, 1, 1), 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
-        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.BIRCH.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.planks, 1, 2), 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
-        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.JUNGLE.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.planks, 1, 3), 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
-        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.ACACIA.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.planks, 1, 4), 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
-        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.BIG_OAK.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.planks, 1, 5), 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
+        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.OAK.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.PLANKS, 1, 0), 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
+        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.SPRUCE.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.PLANKS, 1, 1), 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
+        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.BIRCH.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.PLANKS, 1, 2), 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
+        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.JUNGLE.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.PLANKS, 1, 3), 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
+        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.ACACIA.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.PLANKS, 1, 4), 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
+        GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.BIG_OAK.ordinal()), " s ", "wcw", " w ", 'w', new ItemStack(Blocks.PLANKS, 1, 5), 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
         for (ItemStack itemstack : OreDictionary.getOres("planks"))
         {
-            if (itemstack != null && itemstack.getItem() != Item.getItemFromBlock(Blocks.planks))
+            if (itemstack != null && itemstack.getItem() != Item.getItemFromBlock(Blocks.PLANKS))
             {
-                GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.OAK.ordinal()), " s ", "wcw", " w ", 'w', itemstack, 's', Items.stick, 'c', new ItemStack(Items.dye, 1, 2));
+                GameRegistry.addShapedRecipe(new ItemStack(itemBucket, 1, ItemWoodenBucket.BucketTypes.OAK.ordinal()), " s ", "wcw", " w ", 'w', itemstack, 's', Items.STICK, 'c', new ItemStack(Items.DYE, 1, 2));
             }
         }
 
@@ -128,7 +131,7 @@ public class WoodenBucket
                 RecipeSorter.register(PREFIX + "woodenBucketFreshMilk", PamMilkBucketRecipe.class, SHAPED, "after:minecraft:shaped");
                 if (FluidRegistry.getFluid("milk") != null)
                 {
-                    Item itemFreshMilk = (Item) Item.itemRegistry.getObject("harvestcraft:freshmilkItem");
+                    Item itemFreshMilk = (Item) Item.REGISTRY.getObject("harvestcraft:freshmilkItem");
                     if (itemFreshMilk == null)
                     {
                         LOGGER.error("Failed to find item harvestcraft:freshmilkItem");
@@ -149,7 +152,7 @@ public class WoodenBucket
                 RecipeSorter.register(PREFIX + "woodenBucketFreshMilk", PamFreshWaterBucketRecipe.class, SHAPED, "after:minecraft:shaped");
                 if (FluidRegistry.getFluid("milk") != null)
                 {
-                    Item itemFreshWater = (Item) Item.itemRegistry.getObject("harvestcraft:freshwaterItem");
+                    Item itemFreshWater = (Item) Item.REGISTRY.getObject("harvestcraft:freshwaterItem");
                     if (itemFreshWater == null)
                     {
                         LOGGER.error("Failed to find item harvestcraft:freshwaterItem");

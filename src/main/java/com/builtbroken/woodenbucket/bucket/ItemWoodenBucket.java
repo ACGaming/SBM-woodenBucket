@@ -1,13 +1,13 @@
 package com.builtbroken.woodenbucket.bucket;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.builtbroken.woodenbucket.WoodenBucket;
 import com.builtbroken.woodenbucket.mods.BucketHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,18 +19,20 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fluids.*;
-
-import java.util.HashMap;
-import java.util.List;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Improved version of the vanilla bucket that can accept any fluid type. This
@@ -80,7 +82,7 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
     {
         this.maxStackSize = 1;
         this.setUnlocalizedName(WoodenBucket.PREFIX + "WoodenBucket");
-        this.setCreativeTab(CreativeTabs.tabMisc);
+        this.setCreativeTab(CreativeTabs.MISC);
         this.setHasSubtypes(true);
     }
 
@@ -302,7 +304,7 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
             }
         }
 
-        if (block == Blocks.water && l == 0)
+        if (block == Blocks.WATER && l == 0)
         {
             if (world.setBlockToAir(i, j, k))
             {
@@ -311,7 +313,7 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
                 return this.consumeBucket(itemstack, player, bucket);
             }
         }
-        else if (block == Blocks.lava && l == 0)
+        else if (block == Blocks.LAVA && l == 0)
         {
             if (world.setBlockToAir(i, j, k))
             {
@@ -367,7 +369,7 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
                     //TODO add support for oil and other fuel types to explode in the nether
                     if (world.provider.isHellWorld && stack.getFluid().getUnlocalizedName().contains("water"))
                     {
-                        world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+                        world.playSound((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
                         for (int l = 0; l < 8; ++l)
                         {
@@ -383,11 +385,11 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
                         }
                         if (stack.getFluid() == FluidRegistry.WATER)
                         {
-                            world.setBlock(x, y, z, Blocks.flowing_water);
+                            world.setBlock(x, y, z, Blocks.FLOWING_WATER);
                         }
                         else if (stack.getFluid() == FluidRegistry.LAVA)
                         {
-                            world.setBlock(x, y, z, Blocks.flowing_lava);
+                            world.setBlock(x, y, z, Blocks.FLOWING_LAVA);
                         }
                         else
                         {
@@ -563,7 +565,7 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
     @Override
     public int getItemStackLimit(ItemStack stack)
     {
-        return isEmpty(stack) ? Items.bucket.getItemStackLimit() : 1;
+        return isEmpty(stack) ? Items.BUCKET.getItemStackLimit() : 1;
     }
 
     @SideOnly(Side.CLIENT)
@@ -783,7 +785,7 @@ public class ItemWoodenBucket extends Item implements IFluidContainerItem
                                     {
                                         world.setBlock(x, y + 1, z, Blocks.air);
                                     }
-                                }
+                                } 	
                             }
                         }
                     }
